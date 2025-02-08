@@ -69,6 +69,14 @@ router.get("/:code", async function (req, res, next) {
         [code]
     );
 
+    // Takes the code out of the query string and returns the industries that the company is in / falls under
+    const industry = await db.query(
+      `SELECT industry_code 
+       FROM industry_company
+       WHERE company_code = $1`,
+      [code]
+  );
+
     // Gives the error message if the user inserts an improper code
     if (compResult.rows.length === 0) {
       throw new ExpressError(`No such company: ${code}`, 404)
@@ -76,10 +84,11 @@ router.get("/:code", async function (req, res, next) {
 
     const company = compResult.rows[0];
     const invoices = invResult.rows;
+    const industries = industry.rows;
 
     company.invoices = invoices.map(inv => inv.id);
 
-    return res.json({"company": company});
+    return res.json({"company": company, industries});
   }
 
   catch (err) {

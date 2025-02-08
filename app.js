@@ -9,6 +9,7 @@ const ExpressError = require("./expressError");
 // Calling the routes for companies and invoices
 const companiesRoutes = require("./routes/companies");
 const invoicesRoutes = require("./routes/invoices");
+const industryRoutes = require("./routes/industry")
 
 // making app a variable and setting it for express to be able to make routes 
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 //??
 app.use("/companies", companiesRoutes);
 app.use("/invoices", invoicesRoutes);
+app.use("/industry", industryRoutes )
 
 
 /** 404 handler, what this does is allow 404 errors to be brought up when you call the ExpressError */
